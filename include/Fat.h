@@ -1,0 +1,53 @@
+//
+// Created by qianchen on 2020/11/17.
+//
+
+#ifndef LACORSE_FAKE_FILESYS_FAT_H
+#define LACORSE_FAKE_FILESYS_FAT_H
+
+#define END 65535       //FAT中文件的结束标志
+#define FREE 0          //FAT中盘块空闲标志
+
+#define BLOCKSIZE 1024  //磁盘块大小
+#define SIZE 1024000    //虚拟磁盘空间大小
+#define MAXOPENFILE 10  //最多同时打开文件个数
+
+constexpr int BLOCKNUM = SIZE / BLOCKSIZE;
+
+/**
+ * @class Fat表
+ */
+
+class Fat
+{
+    struct Filelist
+    {
+        unsigned short id_;
+    };
+
+private:
+    Filelist filelist[BLOCKNUM];
+public:
+    /**
+     * @brief 重载了下[]，便于直接访问（不安全）
+     * @param id
+     * @return
+     */
+    unsigned short& operator[](int id)
+    {
+        return filelist[id].id_;
+    }
+
+    /**
+     * @brief 对number个文件状态设置状态status
+     * @param number
+     * @param status
+     */
+    void setid(int number, int status)
+    {
+        filelist[number].id_ = status;
+    }
+
+};
+
+#endif //LACORSE_FAKE_FILESYS_FAT_H
