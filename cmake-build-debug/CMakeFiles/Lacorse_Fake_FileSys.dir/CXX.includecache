@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/BLOCK0.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/BLOCK0.h
 iostream
 -
 string
@@ -14,11 +14,11 @@ string
 cstring
 -
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/CommandFactory.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/CommandFactory.h
 Commandline.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Commandline.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Commandline.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
 iostream
 -
 string
@@ -27,16 +27,18 @@ memory
 -
 vector
 -
+Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fat.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fat.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fcb.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fcb.h
 iostream
 -
 cstring
 -
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
 iostream
 -
 memory
@@ -44,15 +46,25 @@ memory
 fstream
 -
 Useropen.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Useropen.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Useropen.h
 BLOCK0.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/BLOCK0.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/BLOCK0.h
 Fat.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fat.h
-Commandline.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Commandline.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fat.h
+algorithm
+-
+cstring
+-
+common.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
+string
+-
+regex
+-
+iterator
+-
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/LacorseBash.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
 string
 -
 sstream
@@ -60,11 +72,9 @@ sstream
 vector
 -
 Commandline.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Commandline.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
 CommandFactory.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/CommandFactory.h
-Filesystem.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/CommandFactory.h
 pwd.h
 -
 unistd.h
@@ -72,39 +82,35 @@ unistd.h
 cstdlib
 -
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Useropen.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Useropen.h
 memory
 -
 Fcb.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fcb.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fcb.h
+vector
+-
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/common.h
-BLOCK0.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/BLOCK0.h
-Useropen.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Useropen.h
-Fat.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fat.h
-Filesystem.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Filesystem.h
-Fcb.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Fcb.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/main.cpp
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/main.cpp
 iostream
 -
 include/common.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/common.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
 include/Filesystem.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
 include/LacorseBash.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/LacorseBash.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/src/Filesystem.cpp
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/Commandline.cpp
+../include/Commandline.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
+
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/Filesystem.cpp
 ../include/Filesystem.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
 
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/src/LacorseBash.cpp
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/LacorseBash.cpp
 ../include/LacorseBash.h
-/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/include/LacorseBash.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
 

@@ -1,4 +1,4 @@
-/home/qianchen/clion-2020.1.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/qianchen/CLionProjects/Lacorse_Fake_FileSys
+/home/lacorse/Downloads/CLion-2020.3/clion-2020.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lacorse/Desktop/Lacorse_Fake_FileSys
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/qianchen/CLionProjects/Lacorse_Fake_FileSys/cmake-build-debug
+-- Build files have been written to: /home/lacorse/Desktop/Lacorse_Fake_FileSys/cmake-build-debug

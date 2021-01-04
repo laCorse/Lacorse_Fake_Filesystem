@@ -1,4 +1,4 @@
-# Install script for directory: /home/qianchen/CLionProjects/Lacorse_Fake_FileSys
+# Install script for directory: /home/lacorse/Desktop/Lacorse_Fake_FileSys
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/qianchen/CLionProjects/Lacorse_Fake_FileSys/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/lacorse/Desktop/Lacorse_Fake_FileSys/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

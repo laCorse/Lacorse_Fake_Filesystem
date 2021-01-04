@@ -4,15 +4,28 @@
 
 #include "../include/LacorseBash.h"
 
+string vecs2s(vector<string> paths)
+{
+    string s{};
+    for (int i = 0; i < paths.size(); ++i) {
+        s+=paths[i];
+        if (i!=paths.size()-1)
+            s+='/';
+    }
+    return s;
+}
+
 void LacorseBash::Show()
 {
     //输出的样子
-    cout<<username<<'@'<<username<<':'<<string((fakeFs->GetCurrentData()).currentdir)<<"$ ";
+    cout<<username<<'@'<<username<<':'<<vecs2s((fakeFs->GetCurrentData()).path)<<"$ ";
 
 }
 
 void LacorseBash::Read()
 {
+    command.clear();
+    parameter.clear();
     //读入指令,使用string流
     string cmdLine;
     getline(cin,cmdLine);

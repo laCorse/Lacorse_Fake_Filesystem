@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+
 #include "Filesystem.h"
 using namespace std;
 
@@ -24,12 +25,30 @@ class CommandBase
 protected:
     vector<string> parameter;
     shared_ptr<Filesystem> fakeFs;
+
+
 public:
     CommandBase(vector<string> cmdPara,shared_ptr<Filesystem> fs):parameter(cmdPara),fakeFs(fs)
     {}
 
     virtual void Execute()=0;
     virtual ~CommandBase(){};
+
+
+
+    /**
+     * @brief 在指定目录下创建文件
+     * @param filename 名字
+     * @param attribute 指定文件类型是文件还是目录
+     * @return
+     */
+    int touch(string & filename, int attribute);
+
+    /**
+     * @brief 打开一个文件并读入到当前打开文件中,并分配一个openfilelist的下标作为描述符
+     */
+    int open(string & filename);
+
 
 };
 
