@@ -4,24 +4,6 @@
 
 #include "../include/Commandline.h"
 
-int CommandBase::touch(string & filename, int attribute)
-{
-//    vector<string> file_paths = stringSplit(filename,"/");
-//    if (file_paths[0] == string("."))
-//    {
-//        //current path
-//    }
-//    else
-//    {
-//        fakeFs->
-//    }
-}
-
-int CommandBase::open(string & filename)
-{
-    vector<string> file_paths = stringSplit(filename,"/");
-
-}
 
 /**
  * @brief 在当前目录或指定目录下创建名为dirname子目录
@@ -54,13 +36,13 @@ void Mkdir::Execute()
             tmpPath.insert(tmpPath.end(),file_paths.begin()+1,file_paths.end());
             if(!fakeFs->make_dir(tmpPath))
             {
-                cout<<"[Err]Cannot mkdir!1"<<endl;
+                cout<<"[Err]Cannot mkdir!"<<endl;
                 return;
             }
         }
         else
         {
-            cout<<"[Err]Cannot mkdir!2"<<endl;
+            cout<<"[Err]Cannot mkdir!"<<endl;
             return;
         }
     }
@@ -68,7 +50,7 @@ void Mkdir::Execute()
     {
         if(!fakeFs->make_dir(file_paths))
         {
-            cout<<"[Err]Cannot mkdir!3"<<endl;
+            cout<<"[Err]Cannot mkdir!"<<endl;
             return;
         }
     }
@@ -154,9 +136,52 @@ void Ls::Execute()
     cout<<endl;
 }
 
+//
 void Create::Execute()
 {
+    bool isRoot = false;
+    bool isAbosolute = true;
 
+    string path = parameter[0];
+
+    if (path[0] == '/')
+    {
+        isRoot = true;
+    }
+    else
+    {
+        isRoot = false;
+    }
+
+    vector<string> file_paths = stringSplit(path,"/");
+    if (!isRoot)
+    {
+//        if (file_paths[0] == ".")
+//            isAbosolute = false;
+//        if(!isAbosolute)
+//        {
+//            vector<string> tmpPath{fakeFs->GetCurrentData().path};
+//            tmpPath.insert(tmpPath.end(),file_paths.begin()+1,file_paths.end());
+//            if(!fakeFs->make_dir(tmpPath))
+//            {
+//                cout<<"[Err]Cannot mkdir!"<<endl;
+//                return;
+//            }
+//        }
+//        else
+//        {
+//            cout<<"[Err]Cannot mkdir!"<<endl;
+//            return;
+//        }
+    }
+    else
+    {
+        if(!fakeFs->make_file(file_paths))
+        {
+            cout<<"[Err]Cannot mkdir!"<<endl;
+            return;
+        }
+    }
 }
 
 void Rm::Execute()

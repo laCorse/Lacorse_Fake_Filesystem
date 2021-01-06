@@ -122,6 +122,31 @@ public:
 
 
 /**
+ * @class File: delegate file document
+ */
+class File
+{
+public:
+    File(char * file):originPlace(file)
+    {
+        memcpy(content,file,sizeof(BLOCKSIZE));
+    }
+
+
+    ~File()
+    {
+        memcpy(originPlace,content,sizeof(BLOCKSIZE));
+    }
+
+
+private:
+    char content[BLOCKSIZE];
+    char * originPlace;
+
+
+};
+
+/**
  * @class 核心文件系统
  */
 
@@ -304,6 +329,13 @@ public:
      * @brief add a fcb in document file
      */
     bool add_fcb(int firstId,Fcb fcb);
+
+    /**
+     * @brief make a file
+     * @param paths
+     * @return
+     */
+    bool make_file(vector<string> paths);
 
 private:
     //!是否已经初始化

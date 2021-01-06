@@ -416,4 +416,68 @@ bool Filesystem::add_fcb(int firstId,Fcb fcb)
 
 }
 
+bool Filesystem::make_file(vector<string> paths)
+{
 
+    if (!paths.empty())
+    {
+        auto it = paths.begin();
+        if (*it == "")
+            paths.erase(it);
+    }
+
+    Document *curDir = new Document(*proot);
+    Fcb curFcb;
+    bool findFlag = false;
+    int blockId = 5;
+
+    string needtoMake = paths.back();
+    for(int j=0;j<paths.size()-1;j++)
+    {
+        // search curDir
+        for (int i = 0; i < curDir->fcbList.size(); ++i)
+        {
+            if (strcmp(curDir->fcbList[i].filename,paths[j].c_str()) ==0)
+            {
+                if (curDir->fcbList[i].attribute==0)
+                {
+                    findFlag = true;
+                    curFcb = curDir->fcbList[i];
+                    blockId = curFcb.first;
+                    break;
+                }
+
+            }
+        }
+        if (!findFlag)
+        {
+            return false;
+        }
+        else
+        {
+            if (curDir->pos != proot->pos)
+                delete curDir;
+            auto vec = copy_file_vec(blockId);
+            curDir = new Document(vec);
+            findFlag = false;
+        }
+    }
+
+    curDir->save();
+    if (curDir->pos!=proot->pos)
+        delete curDir;
+
+    Fcb newFcb;
+    //allocate new block
+    int newBlock = pfat1->get_FreeBlock();
+    (*pfat1)[newBlock] = END;
+    initFcb(newFcb,needtoMake.c_str(),"",1,0,0,newBlock,0,1);
+    if(!add_fcb(blockId,newFcb))
+    {
+        cout << "[Err]Cannot make this file!"<<endl;
+        return false;
+    }
+
+    return true;
+
+}

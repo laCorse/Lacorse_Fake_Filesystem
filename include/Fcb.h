@@ -85,6 +85,7 @@ using namespace std;
 
 struct Fcb
 {
+public:
     //!文件名
     char filename[8];
     //!文件拓展名

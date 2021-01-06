@@ -83,12 +83,18 @@ cstdlib
 -
 
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Useropen.h
+iostream
+-
 memory
 -
 Fcb.h
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fcb.h
 vector
 -
+Filesystem.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
+Fat.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fat.h
 
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
 
@@ -113,4 +119,8 @@ include/LacorseBash.h
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/src/LacorseBash.cpp
 ../include/LacorseBash.h
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
+
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/Useropen.cpp
+../include/Useropen.h
+/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Useropen.h
 
