@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <sstream>
 
 #include "Filesystem.h"
 using namespace std;

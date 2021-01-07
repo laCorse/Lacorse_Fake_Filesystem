@@ -156,23 +156,6 @@ void Create::Execute()
     vector<string> file_paths = stringSplit(path,"/");
     if (!isRoot)
     {
-//        if (file_paths[0] == ".")
-//            isAbosolute = false;
-//        if(!isAbosolute)
-//        {
-//            vector<string> tmpPath{fakeFs->GetCurrentData().path};
-//            tmpPath.insert(tmpPath.end(),file_paths.begin()+1,file_paths.end());
-//            if(!fakeFs->make_dir(tmpPath))
-//            {
-//                cout<<"[Err]Cannot mkdir!"<<endl;
-//                return;
-//            }
-//        }
-//        else
-//        {
-//            cout<<"[Err]Cannot mkdir!"<<endl;
-//            return;
-//        }
     }
     else
     {
@@ -192,6 +175,29 @@ void Rm::Execute()
 void Open::Execute()
 {
 
+    bool isRoot = false;
+    bool isAbosolute = true;
+    string path = parameter[0];
+    if (path[0] == '/')
+    {
+        isRoot = true;
+    }
+    else
+    {
+        isRoot = false;
+    }
+
+    vector<string> file_paths = stringSplit(path,"/");
+    if (!isRoot)
+    {
+
+    }
+    else
+    {
+        //TODO cout the fd!
+        cout << "[]The open file's fd is "<<fakeFs->add_openFile(file_paths)<<endl;
+    }
+
 }
 
 void Close::Execute()
@@ -199,8 +205,53 @@ void Close::Execute()
 
 }
 
+
 void Write::Execute()
 {
+    int mode=-1;
+    if(parameter[0] == string("-c")||parameter[0] == string("--cut"))
+    {
+        mode = CUT;
+    }
+    else if(parameter[0] == string("-co")||parameter[0] == string("--cover"))
+    {
+        mode = COVER;
+    }
+    else if(parameter[0] == string("-a")||parameter[0] == string("--add"))
+    {
+        mode = ADD;
+    }
+    else
+    {
+        cout << "[Err]Cannot use this command!"<<endl;
+        return;
+    }
+
+
+    ///show
+    stringstream ss;
+    string tmp = parameter[1];
+    ss << tmp;int fd;ss >> fd;
+
+
+    if (fd>=MAXOPENFILE||fd<0)
+    {
+        cout << "[Err]Cannot use this fd!"<<endl;
+        return;
+    }
+
+    if (!fakeFs->get_openFile(fd).empty())
+        fakeFs->get_openFile(fd).read();
+
+    ///pool
+    //char pool[BLOCKSIZE*10];
+    //test
+    string stmp;
+    cin >> stmp;
+    ///write
+    fakeFs->get_openFile(fd).write(mode, const_cast<char *>(stmp.c_str()));
+
+
 
 }
 

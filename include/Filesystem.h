@@ -121,30 +121,7 @@ public:
 };
 
 
-/**
- * @class File: delegate file document
- */
-class File
-{
-public:
-    File(char * file):originPlace(file)
-    {
-        memcpy(content,file,sizeof(BLOCKSIZE));
-    }
 
-
-    ~File()
-    {
-        memcpy(originPlace,content,sizeof(BLOCKSIZE));
-    }
-
-
-private:
-    char content[BLOCKSIZE];
-    char * originPlace;
-
-
-};
 
 /**
  * @class 核心文件系统
@@ -337,6 +314,24 @@ public:
      */
     bool make_file(vector<string> paths);
 
+    /**
+     *
+     * @param fd
+     * @return
+     */
+    Useropen & get_openFile(int fd)
+    {
+        return *(openFiles[fd]);
+    }
+
+    /**
+     *
+     * @return fd
+     */
+    int add_openFile(vector<string> paths);
+
+
+
 private:
     //!是否已经初始化
     bool initialized_;
@@ -345,7 +340,8 @@ private:
     //!分别指向各个块地址，第一块为引导块，2~3块为FAT1,4~5为FAT2，剩余995块为数据区。
     char *blocks[BLOCKNUM];
     //!打开的文件列表
-    Useropen openFiles[MAXOPENFILE];
+    Useropen *openFiles[MAXOPENFILE];
+    int fd = 0;
     //!引导块,托管blocks[0]
     BLOCK0 *pblock0;
     //!FAT1/2

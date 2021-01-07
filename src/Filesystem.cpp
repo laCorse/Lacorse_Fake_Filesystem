@@ -53,9 +53,8 @@ bool Filesystem::Init()
             blocks[i] = ptrToContent + BLOCKSIZE * i;
 
         //当前打开文件清空
-        cout << "[Init]Reset open files' states"<<endl;
-        for(int i=0;i<MAXOPENFILE;i++)
-            openFiles[i].topenfile = false;
+        //cout << "[Init]Reset open files' states"<<endl;
+
         if(Format()) cout<<"[Format]Format succeed."<<endl;
         else cout<<"[Format]Format failed."<<endl;
     } else
@@ -66,9 +65,8 @@ bool Filesystem::Init()
             blocks[i] = ptrToContent + BLOCKSIZE * i;
 
         //当前打开文件清空
-        cout << "[Init]Reset open files' states"<<endl;
-        for(int i=0;i<MAXOPENFILE;i++)
-            openFiles[i].topenfile = false;
+       // cout << "[Init]Reset open files' states"<<endl;
+
         if(FormatBuffer()) cout<<"[Format]FormatBuffer succeed."<<endl;
         else cout<<"[Format]FormatBuffer failed."<<endl;
 
@@ -479,5 +477,85 @@ bool Filesystem::make_file(vector<string> paths)
     }
 
     return true;
+
+}
+
+int Filesystem::add_openFile(vector<string> paths)
+{
+    if (!paths.empty())
+    {
+        auto it = paths.begin();
+        if (*it == "")
+            paths.erase(it);
+    }
+
+    Document *curDir = new Document(*proot);
+    Fcb curFcb;
+    bool findFlag = false;
+    int blockId = 5;
+
+    string needtoMake = paths.back();
+    for(int j=0;j<paths.size();j++)
+    {
+        // search curDir
+        for (int i = 0; i < curDir->fcbList.size(); ++i)
+        {
+            if (strcmp(curDir->fcbList[i].filename,paths[j].c_str()) ==0)
+            {
+                findFlag = true;
+                curFcb = curDir->fcbList[i];
+                blockId = curFcb.first;
+                break;
+            }
+        }
+        if (!findFlag)
+        {
+            return false;
+        }
+        else
+        {
+            if (curDir->pos != proot->pos)
+                delete curDir;
+            auto vec = copy_file_vec(blockId);
+            curDir = new Document(vec);
+            findFlag = false;
+        }
+    }
+
+    curDir->save();
+    if (curDir->pos!=proot->pos)
+        delete curDir;
+
+    fd = fd % MAXOPENFILE;
+    Useropen * tmpUser = new Useropen(paths,curFcb,pfat1,blocks);
+
+    for(auto openF:openFiles)
+    {
+        if(openF)
+        {
+            if(*openF == *tmpUser)
+            {
+                return 10086;
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    if (openFiles[fd])
+    {
+        delete openFiles[fd];
+        openFiles[fd] = tmpUser;
+        fd++;
+    }
+    else
+    {
+        openFiles[fd] = tmpUser;
+        fd++;
+    }
+
+    return fd-1;
 
 }

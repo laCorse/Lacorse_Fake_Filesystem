@@ -7,30 +7,86 @@
 
 #include <iostream>
 #include <memory>
-#include "Fcb.h"
+#include <cstring>
 #include <vector>
-#include "Filesystem.h"
 #include "Fat.h"
+#include "Fcb.h"
 
 using namespace std;
 
-class Useropen
+enum {
+    CUT = 0,
+    COVER,
+    ADD
+};
+
+
+/**
+ * @class File: delegate file document
+ */
+class File
 {
-public:///ke neng shi hu xiang bao han de wen ti
-    Useropen(vector<string> &path, Fcb &fcb, Filesystem *fs) {
-        dir = path;
-        userFcb = fcb;
-        pFs = fs;
-        int first = fcb.first;
-        while (pFs->*pfat1[first] != END) {
-            file.push_back(new File(pFs->blocks[first]))
-            first = pFs->*pfat1[first];
-        }
-        file.push_back(new File(pFs->blocks[first]));
-        pos = 0;
+public:
+    File(char * file):originPlace(file)
+    {
+        memcpy(content,file,sizeof(BLOCKSIZE));
     }
 
-    Useropen(const Fcb &userFcb);
+
+    ~File()
+    {
+        memcpy(originPlace,content,sizeof(BLOCKSIZE));
+    }
+
+    string read_content()
+    {
+        return string(content,BLOCKSIZE);
+    }
+
+    void change_content(char * text,int pos, int size)
+    {
+        memcpy(content+pos,text,size);
+    }
+
+
+private:
+    char content[BLOCKSIZE];
+    char * originPlace;
+
+
+};
+
+
+class Useropen
+{
+
+public:
+    /**
+     * @brief empty
+     */
+    Useropen(){}
+
+    /**
+     * @brief not empty
+     * @param path
+     * @param fcb
+     * @param mfat
+     * @param mblocks
+     */
+    Useropen(vector<string> &path, Fcb &fcb, Fat *mfat,char** mblocks) {
+        dir = path;
+        userFcb = fcb;
+        pFat = mfat;
+        int first = fcb.first;
+        blocks = mblocks;
+        while ((*pFat)[first] != END)
+        {
+            file.push_back(new File(blocks[first]));
+            first = (*pFat)[first];
+        }
+        file.push_back(new File(blocks[first]));
+        pos = 0;
+    }
 
     ~Useropen() {
         for (int i = 0; i < file.size(); ++i) {
@@ -39,18 +95,47 @@ public:///ke neng shi hu xiang bao han de wen ti
     }
 
     /**
+     * @brief like 'cat'
+     * @return
+     */
+    bool read();
+
+    /**
+     * @brief write content
+     * @return
+     */
+    bool write(int mode, char* text);
+
+    /**
      * @brief use dir to check if it opened
      * @param otherOpen
      * @return
      */
     bool operator==(Useropen &otherOpen);
 
+    bool empty()
+    {
+        if (dir.empty())
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
 private:
     Fcb userFcb;            //用户打开的那个文件
     vector<File *> file;    //file content for 1 byte
     vector<string> dir;     //打开文件所在路径，以便检查文件是否已经打开
     int pos;                //读写指针的位置
-    Filesystem *pFs;
+    Fat *pFat;
+    char** blocks;          //指针，指向文件块
+
+
+    bool setMode(int mode);
+
+
+    int lastBlockId();
 };
 
 
