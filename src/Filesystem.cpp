@@ -408,7 +408,7 @@ bool Filesystem::add_fcb(int firstId,Fcb fcb)
     //cout << "size:" << plastDoc->fcbList.size()<<endl;
     //cout << plastDoc->fcbList[0].filename<<endl;
 #endif
-    plastDoc->save();
+
     delete plastDoc;
     return true;
 
@@ -558,4 +558,226 @@ int Filesystem::add_openFile(vector<string> paths)
 
     return fd-1;
 
+}
+
+
+bool Filesystem::close_openFile(int index)
+{
+    if (index>=MAXOPENFILE&&index<0)
+    {
+        cout << "[err]The fd is out of confines!"<<endl;
+        return false;
+    }
+
+    if (openFiles[index])
+    {
+        delete openFiles[index];
+        openFiles[index] = nullptr;
+        return true;
+    }
+    else
+    {
+        cout << "[err]The openfile does not exit!"<<endl;
+        return false;
+    }
+
+}
+
+
+bool Filesystem::remove_dir(vector<string> paths)
+{
+    if (!paths.empty())
+    {
+        auto it = paths.begin();
+        if (*it == "")
+            paths.erase(it);
+    }
+
+    Document *curDir = new Document(*proot);
+    Fcb curFcb;
+    bool findFlag = false;
+    int blockId = 5;
+
+    string needtoMake = paths.back();
+    for(int j=0;j<paths.size()-1;j++)
+    {
+        for (int i = 0; i < curDir->fcbList.size(); ++i)
+        {
+            if (strcmp(curDir->fcbList[i].filename,paths[j].c_str()) ==0)
+            {
+                findFlag = true;
+                curFcb = curDir->fcbList[i];
+                blockId = curFcb.first;
+                break;
+            }
+        }
+        if (!findFlag)
+        {
+            return false;
+        }
+        else
+        {
+            if (curDir->pos != proot->pos)
+                delete curDir;
+            auto vec = copy_file_vec(blockId);
+            curDir = new Document(vec);
+            findFlag = false;
+        }
+    }
+
+    delete curDir;
+    vector<Document*> truDir;
+    int lastId = blockId;
+    while ((*pfat1)[blockId]!=END)
+    {
+        lastId = blockId;
+        truDir.push_back(new Document(blocks[blockId]));
+        blockId = (*pfat1)[blockId];
+    }
+    truDir.push_back(new Document(blocks[blockId]));
+    bool flag = false;
+    for(int i = 0;i<truDir.size();i++)
+    {
+        for (int j = 0; j < truDir[i]->fcbList.size(); ++j) {
+            if (needtoMake == string(truDir[i]->fcbList[j].filename)&&truDir[i]->fcbList[j].attribute == 0)
+            {
+                flag = true;
+
+                /// move the last fcb to cover old one
+                freeBlock(truDir[i]->fcbList[j].first);
+                truDir[i]->fcbList[j] = truDir.back()->fcbList.back();
+                truDir.back()->fcbList.pop_back();
+
+                if (truDir.back()->fcbList.empty())
+                {
+                    (*pfat1)[blockId] = FREE;
+                    if (lastId!=blockId)
+                        (*pfat1)[lastId]=END;
+                }
+
+                break;
+            }
+        }
+        if (flag)
+            break;
+
+    }
+
+    for(auto & tmp : truDir)
+        delete tmp;
+
+    if(flag)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
+}
+
+
+bool Filesystem::remove_file(vector<string> paths)
+{
+    if (!paths.empty())
+    {
+        auto it = paths.begin();
+        if (*it == "")
+            paths.erase(it);
+    }
+
+    Document *curDir = new Document(*proot);
+    Fcb curFcb;
+    bool findFlag = false;
+    int blockId = 5;
+
+    string needtoMake = paths.back();
+    for(int j=0;j<paths.size()-1;j++)
+    {
+        for (int i = 0; i < curDir->fcbList.size(); ++i)
+        {
+            if (strcmp(curDir->fcbList[i].filename,paths[j].c_str()) ==0)
+            {
+                findFlag = true;
+                curFcb = curDir->fcbList[i];
+                blockId = curFcb.first;
+                break;
+            }
+        }
+        if (!findFlag)
+        {
+            return false;
+        }
+        else
+        {
+            if (curDir->pos != proot->pos)
+                delete curDir;
+            auto vec = copy_file_vec(blockId);
+            curDir = new Document(vec);
+            findFlag = false;
+        }
+    }
+
+    delete curDir;
+    vector<Document*> truDir;
+    int lastId = blockId;
+    while ((*pfat1)[blockId]!=END)
+    {
+        lastId = blockId;
+        truDir.push_back(new Document(blocks[blockId]));
+        blockId = (*pfat1)[blockId];
+    }
+    truDir.push_back(new Document(blocks[blockId]));
+    bool flag = false;
+    for(int i = 0;i<truDir.size();i++)
+    {
+        for (int j = 0; j < truDir[i]->fcbList.size(); ++j) {
+            if (needtoMake == string(truDir[i]->fcbList[j].filename)&&truDir[i]->fcbList[j].attribute == 1)
+            {
+                flag = true;
+
+                /// move the last fcb to cover old one
+                freeBlock(truDir[i]->fcbList[j].first);
+                truDir[i]->fcbList[j] = truDir.back()->fcbList.back();
+                truDir.back()->fcbList.pop_back();
+
+                if (truDir.back()->fcbList.empty())
+                {
+                    (*pfat1)[blockId] = FREE;
+                    if (lastId!=blockId)
+                        (*pfat1)[lastId]=END;
+                }
+
+                break;
+            }
+        }
+        if (flag)
+            break;
+
+    }
+    for(auto & tmp : truDir)
+        delete tmp;
+    if(flag)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
+}
+
+void Filesystem::freeBlock(int first)
+{
+    while ((*pfat1)[first]!=END)
+    {
+        int next = first;
+        (*pfat1)[first] = FREE;
+        first = next;
+    }
+    (*pfat1)[first] = FREE;
 }

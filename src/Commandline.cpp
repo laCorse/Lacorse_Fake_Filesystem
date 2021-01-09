@@ -117,7 +117,32 @@ void Cd::Execute()
 
 void Rmdir::Execute()
 {
+    bool isRoot = false;
+    bool isAbosolute = true;
 
+    string path = parameter[0];
+
+    if (path[0] == '/')
+    {
+        isRoot = true;
+    }
+    else
+    {
+        isRoot = false;
+    }
+
+    vector<string> file_paths = stringSplit(path,"/");
+    if (!isRoot)
+    {
+    }
+    else
+    {
+        if(!fakeFs->remove_dir(file_paths))
+        {
+            cout<<"[Err]Cannot remove this fold!"<<endl;
+            return;
+        }
+    }
 }
 
 void Ls::Execute()
@@ -161,7 +186,7 @@ void Create::Execute()
     {
         if(!fakeFs->make_file(file_paths))
         {
-            cout<<"[Err]Cannot mkdir!"<<endl;
+            cout<<"[Err]Cannot create!"<<endl;
             return;
         }
     }
@@ -169,7 +194,32 @@ void Create::Execute()
 
 void Rm::Execute()
 {
+    bool isRoot = false;
+    bool isAbosolute = true;
 
+    string path = parameter[0];
+
+    if (path[0] == '/')
+    {
+        isRoot = true;
+    }
+    else
+    {
+        isRoot = false;
+    }
+
+    vector<string> file_paths = stringSplit(path,"/");
+    if (!isRoot)
+    {
+    }
+    else
+    {
+        if(!fakeFs->remove_file(file_paths))
+        {
+            cout<<"[Err]Cannot remove!"<<endl;
+            return;
+        }
+    }
 }
 
 void Open::Execute()
@@ -202,7 +252,10 @@ void Open::Execute()
 
 void Close::Execute()
 {
-
+    stringstream ss;
+    string tmp = parameter[0];
+    ss << tmp;int fd;ss >> fd;
+    fakeFs->close_openFile(fd);
 }
 
 

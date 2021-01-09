@@ -76,10 +76,12 @@ public:
     {
         if (pos)
         {
+            memset(pos,0,BLOCKSIZE);
             for(int i=0;i<fcbList.size();i++)
             {
                 memcpy(pos+i*sizeof(Fcb),&fcbList[i],sizeof(Fcb));
             }
+
 
         }
     }
@@ -104,6 +106,7 @@ public:
     {
         if (pos)
         {
+            //memset(pos,0,BLOCKSIZE);
             for(int i=0;i<fcbList.size();i++)
             {
                 memcpy(pos+i*sizeof(Fcb),&fcbList[i],sizeof(Fcb));
@@ -325,13 +328,24 @@ public:
     }
 
     /**
-     *
+     * @brief see name
      * @return fd
      */
     int add_openFile(vector<string> paths);
 
+    /**
+     * @brief see name
+     * @param index
+     * @return
+     */
+    bool close_openFile(int index);
+
+    bool remove_dir(vector<string> paths);
+
+    bool remove_file(vector<string> paths);
 
 
+    void freeBlock(int);
 private:
     //!是否已经初始化
     bool initialized_;

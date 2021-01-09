@@ -92,6 +92,7 @@ public:
         for (int i = 0; i < file.size(); ++i) {
             delete file[i];
         }
+
     }
 
     /**
