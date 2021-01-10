@@ -160,4 +160,14 @@ public:
     virtual void Execute();
 };
 
+class Exit :public CommandBase
+{
+
+public:
+    Exit(vector<string> cmdPara,shared_ptr<Filesystem> fs):CommandBase(cmdPara, fs)
+    {}
+
+    virtual void Execute();
+};
+
 #endif //LACORSE_FAKE_FILESYS_COMMANDLINE_H

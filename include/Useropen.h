@@ -29,18 +29,18 @@ class File
 public:
     File(char * file):originPlace(file)
     {
-        memcpy(content,file,sizeof(BLOCKSIZE));
+        memcpy(content,file,BLOCKSIZE);
     }
 
 
     ~File()
     {
-        memcpy(originPlace,content,sizeof(BLOCKSIZE));
+        memcpy(originPlace,content,BLOCKSIZE);
     }
 
     string read_content()
     {
-        return string(content,BLOCKSIZE);
+        return string(content);
     }
 
     void change_content(char * text,int pos, int size)
@@ -52,8 +52,6 @@ public:
 private:
     char content[BLOCKSIZE];
     char * originPlace;
-
-
 };
 
 
@@ -77,7 +75,9 @@ public:
         dir = path;
         userFcb = fcb;
         pFat = mfat;
+
         int first = fcb.first;
+        cout << "first "<<first<<endl;
         blocks = mblocks;
         while ((*pFat)[first] != END)
         {

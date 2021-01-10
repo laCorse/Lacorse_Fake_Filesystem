@@ -39,6 +39,8 @@ public:
             return unique_ptr<CommandBase>(new Close(parameter,fs));
         else if(command == "write")
             return unique_ptr<CommandBase>(new Write(parameter,fs));
+        else if(command == "save")
+            return unique_ptr<CommandBase>(new Exit(parameter,fs));
         else
             return unique_ptr<CommandBase>(new Empty(parameter,fs));
 

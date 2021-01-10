@@ -4,8 +4,9 @@
 
 #include "../include/Filesystem.h"
 
-#define DEBUG
+//#define DEBUG
 
+#define SAVE
 vector<string> stringSplit(const string &in, const string &delim) {
     regex re{delim};
     return vector<std::string>{
@@ -24,7 +25,7 @@ Filesystem::Filesystem()
     {
         cout << "[Init]Initialized succeed." << endl;
         initialized_ = true;
-        cout << "[Format]Start to format..."<<endl;
+        //cout << "[Format]Start to format..."<<endl;
     }
     else
     {
@@ -42,11 +43,10 @@ Filesystem::Filesystem()
 bool Filesystem::Init()
 {
     cout << "[Init]Allocate disk space..."<<endl;
+    ptrToContent = new char[SIZE]{0};
     //分配虚拟磁盘
     if (!ReadFileSys())
     {
-        ptrToContent = new char[SIZE]{0};
-
         //设置每个块的指针
         cout << "[Init]Set block pointers..."<<endl;
         for(int i = 0;i<BLOCKNUM;i++)
@@ -105,31 +105,37 @@ bool Filesystem::FormatBuffer()
 
     //创建根目录
     proot = new Document(blocks[5]);
-
+    read_dir(5,string());
     //创建当前用户打开环境
-    currentData.currentFileId = 0;
+    //currentData.currentFileId = 0;
 
     return true;
 }
 
 bool Filesystem::ReadFileSys()
 {
-    ifstream inFile("./lacorse_Fs_bak.dat", ios::in | ios::binary);
+#ifndef SAVE
+    return false;
+#endif
+    ifstream inFile("./lacorse_Fs_bak1.dat", ios::in | ios::binary);
     if (!inFile)
     {
         cout << "[Read]Cannot find File System backup!" << endl;
         return false;
     }
-    inFile.read((char*)ptrToContent,SIZE);
+    inFile.read(ptrToContent,SIZE);
+    //inFile>>ptrToContent;
     cout << "[Read]Read File System backup succeed!" << endl;
     inFile.close();
-    return false;
+#ifdef SAVE
+    return true;
+#endif
 }
 
 void Filesystem::SaveFileSys()
 {
-    ofstream outFile("./lacorse_Fs_bak.dat", ios::out | ios::binary);
-    outFile.write((char*)ptrToContent, SIZE);
+    ofstream outFile("./lacorse_Fs_bak1.dat", ios::out | ios::binary);
+    outFile.write(ptrToContent, SIZE);
     outFile.close();
     cout << "[Save]Save File System succeed!" << endl;
 }
@@ -156,17 +162,12 @@ bool Filesystem::search_file(vector<string> paths,int & id)
             paths.erase(it);
     }
     proot->update();
-#ifdef DEBUG
-    cout <<"root "<< proot->fcbList.size() << endl;
-#endif
+
     Document * curDir = new Document(*proot);
     Fcb curFcb;
     bool findFlag = false;
     int blockId;
 
-#ifdef DEBUG
-    cout <<"path "<< paths[0] << endl;
-#endif
     if (paths.size()==0 || paths.empty())
     {
         id=5;
@@ -175,10 +176,7 @@ bool Filesystem::search_file(vector<string> paths,int & id)
     {
         for(int j=0;j<paths.size();j++)
         {
-#ifdef DEBUG
-            cout << curDir->fcbList[0].filename << endl;
-            cout << strcmp(curDir->fcbList[0].filename,paths[0].c_str())<<endl;
-#endif
+
             // search curDir
             for (int i = 0; i < curDir->fcbList.size(); ++i)
             {
@@ -211,9 +209,7 @@ bool Filesystem::search_file(vector<string> paths,int & id)
 
     }
 
-#ifdef DEBUG
-    cout <<"id "<< id << endl;
-#endif
+
     return true;
 }
 
@@ -226,9 +222,7 @@ bool Filesystem::list_file(vector<string> paths)
         if (*it == "")
             paths.erase(it);
     }
-#ifdef DEBUG
-    cout <<"root "<< proot->fcbList.size() << endl;
-#endif
+
     Document * curDir =new Document(*proot);
     Fcb curFcb;
     bool findFlag = false;
@@ -258,9 +252,7 @@ bool Filesystem::list_file(vector<string> paths)
         {
             delete curDir;
             auto vec = copy_file_vec(blockId);
-#ifdef DEBUG
 
-#endif
             curDir = new Document(vec);
             findFlag = false;
         }
@@ -286,25 +278,18 @@ bool Filesystem::make_dir(vector<string> paths)
         if (*it == "")
             paths.erase(it);
     }
-#ifdef DEBUG
-    cout <<"root "<< proot->fcbList.size() << endl;
-#endif
+
 
     Document *curDir = new Document(*proot);
     Fcb curFcb;
     bool findFlag = false;
     int blockId = 5;
-#ifdef DEBUG
-    cout<< "newID: " << blockId <<endl;
-#endif
-//    if (paths.size() == 1)
-//        blockId = 5;
+
+   blockId = 5;
 
 
     string needtoMake = paths.back();
-#ifdef DEBUG
-    cout<< "needtoMake: " << needtoMake <<endl;
-#endif
+
     for(int j=0;j<paths.size()-1;j++)
     {
         // search curDir
@@ -331,9 +316,7 @@ bool Filesystem::make_dir(vector<string> paths)
             if (curDir->pos != proot->pos)
                 delete curDir;
             auto vec = copy_file_vec(blockId);
-#ifdef DEBUG
 
-#endif
             curDir = new Document(vec);
             findFlag = false;
         }
@@ -342,9 +325,6 @@ bool Filesystem::make_dir(vector<string> paths)
     curDir->save();
     if (curDir->pos!=proot->pos)
         delete curDir;
-#ifdef DEBUG
-    cout <<"root "<< proot->fcbList.size() << endl;
-#endif
 
     /// create the file in curDir
     Fcb newFcb;
@@ -359,11 +339,7 @@ bool Filesystem::make_dir(vector<string> paths)
     }
 
 
-#ifdef DEBUG
-//    cout <<"list_file"<<endl;
-//    list_file(vector<string>());
-//    cout <<endl;
-#endif
+
     return true;
 
 }
@@ -381,10 +357,7 @@ bool Filesystem::add_fcb(int firstId,Fcb fcb)
         lastId = (*pfat1)[lastId];
     }
     Document* plastDoc = new Document(blocks[lastId]);
-#ifdef DEBUG
-    cout<< "last id: " <<lastId<<endl;
-    cout<< "plastDoc->fcbList: " <<plastDoc->fcbList.size()<<endl;
-#endif
+
     if((plastDoc->fcbList.size()+1)*sizeof(Fcb)>= BLOCKSIZE)
     {
         int freeBlock = pfat1->get_FreeBlock();
@@ -522,9 +495,10 @@ int Filesystem::add_openFile(vector<string> paths)
         }
     }
 
-    curDir->save();
-    if (curDir->pos!=proot->pos)
-        delete curDir;
+//    curDir->save();
+//    if (curDir->pos!=proot->pos)
+//        delete curDir;
+    delete curDir;
 
     fd = fd % MAXOPENFILE;
     Useropen * tmpUser = new Useropen(paths,curFcb,pfat1,blocks);
@@ -563,7 +537,7 @@ int Filesystem::add_openFile(vector<string> paths)
 
 bool Filesystem::close_openFile(int index)
 {
-    if (index>=MAXOPENFILE&&index<0)
+    if (index>=MAXOPENFILE || index<0)
     {
         cout << "[err]The fd is out of confines!"<<endl;
         return false;

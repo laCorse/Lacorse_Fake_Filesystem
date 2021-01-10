@@ -14,24 +14,6 @@ string
 cstring
 -
 
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/CommandFactory.h
-Commandline.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
-
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
-iostream
--
-string
--
-memory
--
-vector
--
-sstream
--
-Filesystem.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
-
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fat.h
 
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Fcb.h
@@ -66,24 +48,6 @@ regex
 iterator
 -
 
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
-string
--
-sstream
--
-vector
--
-Commandline.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
-CommandFactory.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/CommandFactory.h
-pwd.h
--
-unistd.h
--
-cstdlib
--
-
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Useropen.h
 iostream
 -
@@ -100,25 +64,7 @@ Fcb.h
 
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
 
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/main.cpp
-iostream
--
-include/common.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/common.h
-include/Filesystem.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
-include/LacorseBash.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
-
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/Commandline.cpp
-../include/Commandline.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Commandline.h
-
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/src/Filesystem.cpp
 ../include/Filesystem.h
 /home/lacorse/Desktop/Lacorse_Fake_FileSys/include/Filesystem.h
-
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/src/LacorseBash.cpp
-../include/LacorseBash.h
-/home/lacorse/Desktop/Lacorse_Fake_FileSys/include/LacorseBash.h
 

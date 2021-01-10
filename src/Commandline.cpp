@@ -284,6 +284,7 @@ void Write::Execute()
     ///show
     stringstream ss;
     string tmp = parameter[1];
+    cout << "tmp : "<<tmp<<endl;
     ss << tmp;int fd;ss >> fd;
 
 
@@ -306,6 +307,12 @@ void Write::Execute()
 
 
 
+}
+
+void Exit::Execute()
+{
+    fakeFs->SaveFileSys();
+//    exit();
 }
 
 
